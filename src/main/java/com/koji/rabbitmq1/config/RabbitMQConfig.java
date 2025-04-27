@@ -23,7 +23,7 @@ public class RabbitMQConfig {
 
 
     // 큐 네임을 설정한다.
-    public static final String QUEUE_NAME = "helloQueue";
+    public static final String QUEUE_NAME = "workQueue";
 
     /**
      *  역할: 이 Bean은 Queue 인스턴스를 생성하고, 애플리케이션이 사용할 RabbitMQ 큐를 정의합니다.
@@ -66,6 +66,7 @@ public class RabbitMQConfig {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
         container.setQueueNames(QUEUE_NAME);
+        container.setAcknowledgeMode(AcknowledgeMode.AUTO);
         container.setMessageListener(listenerAdapter);
         return container;
     }
@@ -79,8 +80,8 @@ public class RabbitMQConfig {
      *     RabbitMQ에서 수신된 메시지가 receiver.receiveMessage(String message) 메서드로 전달됩니다.
      */
     @Bean
-    public MessageListenerAdapter listenerAdapter(Receiver receiver) {
-        return new MessageListenerAdapter(receiver, "receiveMessage");
+    public MessageListenerAdapter listenerAdapter(WorkQueueConsumer receiver) {
+        return new MessageListenerAdapter(receiver, "workqueueTask");
     }
 
 }

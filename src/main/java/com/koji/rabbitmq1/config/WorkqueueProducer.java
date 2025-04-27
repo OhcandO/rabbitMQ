@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * packageName    : com.koji.rabbitmq1.config
- * fileName       : Sender
+ * fileName       : WorkqueueProducer
  * date           : 2025-04-27
  * description    :
  * ===========================================================
@@ -15,15 +15,16 @@ import org.springframework.stereotype.Component;
  * -----------------------------------------------------------
  * 2025-04-27                           최초 생성
  */
-@Slf4j
 @Component
+@Slf4j
 @RequiredArgsConstructor
-public class Sender {
+public class WorkqueueProducer {
 
     private final RabbitTemplate rabbitTemplate;
 
-    public void send(String msg){
-        rabbitTemplate.convertAndSend(RabbitMQConfig.QUEUE_NAME, msg);
-        log.info("[##] sender sent msg : {}", msg);
+    public void sendWorkqueue (String msg, int duration){
+        String sentMsg = msg+"|"+duration;
+        rabbitTemplate.convertAndSend(RabbitMQConfig.QUEUE_NAME, sentMsg);
+        log.info("[>>] Sent workqueue : {}",sentMsg);
     }
 }
