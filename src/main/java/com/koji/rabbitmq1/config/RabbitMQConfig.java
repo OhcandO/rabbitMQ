@@ -21,32 +21,28 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMQConfig {
 
-    /**
-     * Queue queue()
-     *  역할: 이 Bean은 Queue 인스턴스를 생성하고, 애플리케이션이 사용할 RabbitMQ 큐를 정의합니다.
-     *  QUEUE_NAME은 메시지가 쌓이고 처리될 큐의 이름을 정의합니다. 이 예제에서는 helloQueue로 설정되어 있습니다.
-     * 	false 파라미터는 큐가 휘발성(volatile)인지 영속성(persistent)인지 여부를 지정하는 옵션입니다. false로 설정하면 서버가 종료되거나 재시작될 때 큐의 메시지가 사라집니다.
-     * 	사용 용도: 메시지를 전달하고 처리하는 기본 큐를 설정하는 데 사용됩니다.
-     *
-     *  RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory)
-     *  역할: RabbitMQ와의 통신을 위한 템플릿 클래스 RabbitTemplate의 인스턴스를 생성합니다. 이 템플릿은 메시지를 보내고 받을 때 주로 사용됩니다.
-     *  RabbitTemplate은 Spring의 JdbcTemplate과 비슷하게, RabbitMQ와 상호작용하기 위한 간단한 API를 제공합니다. 주로 메시지 전송을 담당합니다.
-     * 	ConnectionFactory는 RabbitMQ와의 연결을 관리하는 객체로, rabbitTemplate에 주입하여 메시지를 전송할 때 사용할 연결을 제공합니다.
-     * 	사용 용도: 메시지를 전송하는 Sender가 rabbitTemplate.convertAndSend() 메서드를 사용해 큐에 메시지를 넣는 데 사용합니다.
-     *
-
-     *
-
-     */
 
     // 큐 네임을 설정한다.
     public static final String QUEUE_NAME = "helloQueue";
 
+    /**
+     *  역할: 이 Bean은 Queue 인스턴스를 생성하고, 애플리케이션이 사용할 RabbitMQ 큐를 정의합니다.
+      *  QUEUE_NAME은 메시지가 쌓이고 처리될 큐의 이름을 정의합니다. 이 예제에서는 helloQueue로 설정되어 있습니다.
+      * 	false 파라미터는 큐가 휘발성(volatile)인지 영속성(persistent)인지 여부를 지정하는 옵션입니다. false로 설정하면 서버가 종료되거나 재시작될 때 큐의 메시지가 사라집니다.
+      * 	사용 용도: 메시지를 전달하고 처리하는 기본 큐를 설정하는 데 사용됩니다.
+     */
     @Bean
     public Queue queue() {
         return new Queue(QUEUE_NAME, false);
     }
 
+    /**
+     *  RabbitMQ와의 통신을 위한 템플릿 클래스 RabbitTemplate의 인스턴스를 생성합니다. <br/>
+     *  이 템플릿은 메시지를 보내고 받을 때 주로 사용됩니다.<br/>
+     *  RabbitTemplate은 Spring의 JdbcTemplate과 비슷하게, RabbitMQ와 상호작용하기 위한 간단한 API를 제공합니다.<br/><br/>
+     * 	ConnectionFactory는 RabbitMQ와의 연결을 관리하는 객체로, rabbitTemplate에 주입하여 메시지를 전송할 때 사용할 연결을 제공합니다.<br/>
+     * 	사용 용도: 메시지를 전송하는 Sender가 rabbitTemplate.convertAndSend() 메서드를 사용해 큐에 메시지를 넣는 데 사용합니다.
+     */
     @Bean
     public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
         return new RabbitTemplate(connectionFactory);
