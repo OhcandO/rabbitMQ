@@ -23,7 +23,8 @@ public class RabbitMQConfig {
 
 
     // 큐 네임을 설정한다.
-    public static final String QUEUE_NAME = "workQueue";
+    public static final String QUEUE_NAME = "notificationQueue";
+    public static final String FANOUT_EXCHANGE = "notificationExchange";
 
     /**
      *  역할: 이 Bean은 Queue 인스턴스를 생성하고, 애플리케이션이 사용할 RabbitMQ 큐를 정의합니다.
@@ -36,52 +37,13 @@ public class RabbitMQConfig {
         return new Queue(QUEUE_NAME, false);
     }
 
-    /**
-     *  RabbitMQ와의 통신을 위한 템플릿 클래스 RabbitTemplate의 인스턴스를 생성합니다. <br/>
-     *  이 템플릿은 메시지를 보내고 받을 때 주로 사용됩니다.<br/>
-     *  RabbitTemplate은 Spring의 JdbcTemplate과 비슷하게, RabbitMQ와 상호작용하기 위한 간단한 API를 제공합니다.<br/><br/>
-     * 	ConnectionFactory는 RabbitMQ와의 연결을 관리하는 객체로, rabbitTemplate에 주입하여 메시지를 전송할 때 사용할 연결을 제공합니다.<br/>
-     * 	사용 용도: 메시지를 전송하는 Sender가 rabbitTemplate.convertAndSend() 메서드를 사용해 큐에 메시지를 넣는 데 사용합니다.
-     */
     @Bean
-    public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
-        return new RabbitTemplate(connectionFactory);
+    public FanoutExchange fanoutExchange() {
+        return new FanoutExchange(FANOUT_EXCHANGE);
     }
 
-    /**
-      * <h3>이 Bean은 RabbitMQ 메시지를 비동기적으로 수신하기 위해 SimpleMessageListenerContainer를 생성합니다.<br/>
-     *  이 컨테이너는 특정 큐를 지속적으로 모니터링하고, 메시지를 수신하면 지정된 리스너(MessageListenerAdapter)를 통해 처리합니다.</h3><hr/>
-      * 	ConnectionFactory는 RabbitMQ와 연결을 유지하며, 수신하는 메시지를 이 연결을 통해 가져옵니다.<br/>
-      * 	setQueueNames(QUEUE_NAME) 메서드는 특정 큐 이름을 설정합니다. 이 컨테이너는 helloQueue에서 수신되는 메시지를 모니터링합니다.<br/>
-      * 	setMessageListener(listenerAdapter)는 listenerAdapter를 설정하여, 메시지가 수신될 때 호출할 리스너를 지정합니다.<br/>
-      * 	•   Spring AMQP에서 메시지를 자동으로 수신하려면 SimpleMessageListenerContainer가 필요합니다.<br/>
-      * 	메시지 수신과 관련된 스레드 관리, 연결 유지, 큐 모니터링 작업을 자동으로 처리합니다.<br/>
-      * 	없이 구현하면?:<br/>
-      * 	RabbitTemplate의 receiveAndConvert() 메서드를 수동으로 호출하여 메시지를 가져오는 동기적 방식으로 구현해야 합니다.
-      * 	•   이는 비효율적이며, 큐의 상태를 주기적으로 확인(polling)해야 하기 때문에 자원을 낭비할 수 있습니다.
-     */
     @Bean
-    public SimpleMessageListenerContainer container(ConnectionFactory connectionFactory,
-                                                    MessageListenerAdapter listenerAdapter) {
-        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
-        container.setConnectionFactory(connectionFactory);
-        container.setQueueNames(QUEUE_NAME);
-        container.setAcknowledgeMode(AcknowledgeMode.AUTO);
-        container.setMessageListener(listenerAdapter);
-        return container;
+    public Binding bindNotification(Queue notificationQueue, FanoutExchange fanoutExchange) {
+        return BindingBuilder.bind(notificationQueue).to(fanoutExchange);
     }
-
-    /**
-     *  <h3>MessageListenerAdapter는 수신한 메시지를 특정 클래스의 특정 메서드로 전달하는 어댑터 역할을 합니다.</h3><hr/>
-     *  receiver 객체는 메시지를 처리하는 역할을 하는 빈이며, receiveMessage 메서드를 호출합니다.<br/>
-     * 	MessageListenerAdapter는 RabbitMQ에서 수신된 메시지를 특정 메서드에 전달할 수 있도록 해 줍니다.<br/>
-     *     이 경우, receiveMessage 메서드가 자동으로 호출되며, 메시지 내용을 인자로 받습니다.<br/><br/>
-     * 	Receiver 클래스의 receiveMessage 메서드가 메시지를 수신하여 처리할 수 있도록 설정합니다.<br/>
-     *     RabbitMQ에서 수신된 메시지가 receiver.receiveMessage(String message) 메서드로 전달됩니다.
-     */
-    @Bean
-    public MessageListenerAdapter listenerAdapter(WorkQueueConsumer receiver) {
-        return new MessageListenerAdapter(receiver, "workqueueTask");
-    }
-
 }

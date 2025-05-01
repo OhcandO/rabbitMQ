@@ -7,24 +7,23 @@ import org.springframework.stereotype.Component;
 
 /**
  * packageName    : com.koji.rabbitmq1.config
- * fileName       : WorkqueueProducer
- * date           : 2025-04-27
+ * fileName       : NotificationPublisher
+ * date           : 2025-05-01
  * description    :
  * ===========================================================
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
- * 2025-04-27                           최초 생성
+ * 2025-05-01                           최초 생성
  */
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class WorkqueueProducer {
+public class NotificationPublisher {
 
     private final RabbitTemplate rabbitTemplate;
 
-    public void sendWorkqueue (String msg, int duration){
-        String sentMsg = msg+"|"+duration;
-        rabbitTemplate.convertAndSend(RabbitMQConfig.QUEUE_NAME, sentMsg);
-        log.info("[>>] Sent workqueue : {}",sentMsg);
+    public void publish(String message){
+        rabbitTemplate.convertAndSend(RabbitMQConfig.FANOUT_EXCHANGE, "", message);
+        log.info(" [>>] Message published successfully : {}", message);
     }
 }
