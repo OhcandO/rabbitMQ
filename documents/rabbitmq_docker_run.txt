@@ -1,0 +1,2 @@
+docker run -d -e TZ=Asia/Seoul --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:management
+e2247206914f0d3e59a3a798e869a7666cdf6ce18541d6ffe4e1c69cd68c9868
