@@ -38,6 +38,9 @@ spring:
 #              exchangeType: fanout                   # fanout exchange 사용 (라우팅키 필요 없음)
 
           # === CONSUMER 별 RabbitMQ 세부 설정 ===
+          errorLogConsumer-in-0:
+            consumer:
+              binding-routing-key: error.log
 #          bulkDataConsumer-in-0:
 #            consumer:
 #              bindingRoutingKey: bulk.data           # 대량 데이터 라우팅키
