@@ -3,11 +3,17 @@ spring:
     import: optional:classpath:application-stream_common.yml
   cloud:
     stream:
+#      function:
+#        bindings:
+#          errorLogConsumer-in-0: errorLogConsumer
       bindings:
         # === PRODUCER 바인딩 설정 ===
         errorLogProducer-out-0: # producer_1: 공통 error 로그를 수집하는 큐로 메시지 전달 (direct exchange)
           destination: error.logging.exchange         # 업계 표준: error 로그용 exchange
 
+        errorLogConsumer-in-0:
+          destination: error.logging.exchange
+          group: errorLogGroup
 #        commandProducer-out-0: # producer_2: MSA 서비스의 특정 로직 수행 (direct exchange)
 #          destination: service.command.exchange       # command 메시지 전용 exchange
 #
@@ -27,7 +33,8 @@ spring:
           # === PRODUCER 별 RabbitMQ 세부 설정 ===
           errorLogProducer-out-0:
             producer:
-              bindingRoutingKey: error.log           # error 로그 라우팅키
+              bindingRoutingKey: error.log
+              exchange-type: direct
 
 #          commandProducer-out-0:
 #            producer:
@@ -41,6 +48,9 @@ spring:
           errorLogConsumer-in-0:
             consumer:
               binding-routing-key: error.log
+              exchange-type: direct
+    function:
+      definition: errorLogConsumer
 #          bulkDataConsumer-in-0:
 #            consumer:
 #              bindingRoutingKey: bulk.data           # 대량 데이터 라우팅키

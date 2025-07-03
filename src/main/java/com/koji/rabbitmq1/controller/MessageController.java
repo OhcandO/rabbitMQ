@@ -1,6 +1,6 @@
 package com.koji.rabbitmq1.controller;
 
-import com.koji.rabbitmq1.service.DataProducer;
+import com.koji.rabbitmq1.message.producer.DataProducer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

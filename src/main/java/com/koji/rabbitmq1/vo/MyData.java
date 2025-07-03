@@ -11,4 +11,9 @@ public class MyData {
     private String dateStr;
     private String value;
 
+    public MyData(String id, String dateStr, String value) {
+        this.id = id;
+        this.dateStr = dateStr;
+        this.value = value;
+    }
 }
