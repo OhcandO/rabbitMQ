@@ -32,7 +32,7 @@ public class MessageConsumerConfig {
 //    }
 
     @Bean
-    public Consumer<Map<String, Object>> errorLogConsumer(){
+    public Consumer<Map<String, String>> errorLogConsumer(){
 //    public Consumer<ErrorLogMessage> errorLogConsumer(){
         log.warn("<<<in...ㅅㄷㄴㅅ");
         return message->{
@@ -40,7 +40,7 @@ public class MessageConsumerConfig {
 //            String errorMessage = message.getErrorMessage();
 //            long timestamp = message.getTimestamp();
 //            log.warn("<<<incoming<<:{}/{}/{}",errorType,errorMessage,timestamp);
-              log.info ("incoling is <<<:{}",(String) message.get("key"));
+              log.info ("incoling is <<<:{}",message.toString());
         };
     }
 

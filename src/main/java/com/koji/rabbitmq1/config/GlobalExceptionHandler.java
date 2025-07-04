@@ -8,6 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 전역 에러 핸들러
  */
@@ -28,8 +31,11 @@ public class GlobalExceptionHandler {
                 .serviceName(this.getClass().getSimpleName())
                 .timestamp(System.currentTimeMillis())
                 .build();
-
-        errorLogProducer.sendErrorLog(errorLogMessage);
+        log.warn("@@@at exception handler : {}",errorLogMessage.toString());
+        Map<String,String> tempMap = new HashMap<>();
+        tempMap.put("errorType",ex.getClass().getSimpleName());
+        tempMap.put("errorMessage",ex.getMessage());
+        errorLogProducer.sendErrorLog(tempMap);
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(errorLogMessage.toString());

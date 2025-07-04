@@ -1,0 +1,60 @@
+spring:
+  config:
+    import: optional:classpath:application-stream_common.yml
+  cloud:
+    stream:
+#      function:
+#        bindings:
+#          errorLogConsumer-in-0: errorLogConsumer
+      bindings:
+        # === PRODUCER 바인딩 설정 ===
+        errorLogProducer-out-0: # producer_1: 공통 error 로그를 수집하는 큐로 메시지 전달 (direct exchange)
+          destination: error.logging.exchange         # 업계 표준: error 로그용 exchange
+
+        errorLogConsumer-in-0:
+          destination: error.logging.exchange
+          group: errorLogGroup
+#        commandProducer-out-0: # producer_2: MSA 서비스의 특정 로직 수행 (direct exchange)
+#          destination: service.command.exchange       # command 메시지 전용 exchange
+#
+#        broadcastProducer-out-0: # producer_3: 모든 MSA 서비스 인스턴스에 브로드캐스트 (fanout exchange)
+#          destination: service.broadcast.exchange     # 브로드캐스트용 exchange
+
+        # === CONSUMER 바인딩 설정 ===
+#        bulkDataConsumer-in-0: # consumer_1: 대량 데이터 처리, 여러 인스턴스가 round robin 처리
+#          destination: bulk.data.exchange            # 대량 데이터용 exchange
+#          group: bulk-data-worker-group              # 동일 group이면 round robin 처리됨
+#
+#        configUpdateConsumer-in-0: # consumer_2: 하루 한 번 MAIN-SERVICE로부터 설정정보 수신
+#          destination: config.update.exchange        # 설정 정보용 exchange
+#          group: config-update-receiver               # 단일 인스턴스 처리
+      rabbit:
+        bindings:
+          # === PRODUCER 별 RabbitMQ 세부 설정 ===
+          errorLogProducer-out-0:
+            producer:
+              bindingRoutingKey: error.log
+              exchange-type: direct
+
+#          commandProducer-out-0:
+#            producer:
+#              bindingRoutingKey: service.command     # 서비스 명령 라우팅키
+#
+#          broadcastProducer-out-0:
+#            producer:
+#              exchangeType: fanout                   # fanout exchange 사용 (라우팅키 필요 없음)
+
+          # === CONSUMER 별 RabbitMQ 세부 설정 ===
+          errorLogConsumer-in-0:
+            consumer:
+              binding-routing-key: error.log
+              exchange-type: direct
+    function:
+      definition: errorLogConsumer
+#          bulkDataConsumer-in-0:
+#            consumer:
+#              bindingRoutingKey: bulk.data           # 대량 데이터 라우팅키
+#
+#          configUpdateConsumer-in-0:
+#            consumer:
+#              bindingRoutingKey: config.update       # 설정 정보 라우팅키
