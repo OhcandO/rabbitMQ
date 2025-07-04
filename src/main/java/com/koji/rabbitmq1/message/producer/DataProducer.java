@@ -2,7 +2,6 @@ package com.koji.rabbitmq1.message.producer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.koji.rabbitmq1.vo.CommandMessage;
 import com.koji.rabbitmq1.vo.MyData;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cloud.stream.function.StreamBridge;
@@ -52,13 +51,13 @@ public class DataProducer {
     }
 
    // 2. Command 메시지 전송
-   public void sendCommand(CommandMessage message) {
-       streamBridge.send("commandProducer-out-0", message);
-   }
+//   public void sendCommand(CommandMessage message) {
+//       streamBridge.send("commandProducer-out-0", message);
+//   }
 
    // 3. Broadcast 메시지 전송
-   public void sendBroadcast(String broadcastMsg) {
-       streamBridge.send("broadcastProducer-out-0", broadcastMsg);
-   }
+//   public void sendBroadcast(String broadcastMsg) {
+//       streamBridge.send("broadcastProducer-out-0", broadcastMsg);
+//   }
 
 }
