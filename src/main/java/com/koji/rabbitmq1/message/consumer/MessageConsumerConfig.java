@@ -1,13 +1,10 @@
 package com.koji.rabbitmq1.message.consumer;
 
 import com.koji.rabbitmq1.vo.ConfigUpdateMessage;
-import com.koji.rabbitmq1.vo.ErrorLogMessage;
-import com.koji.rabbitmq1.vo.MyData;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
-import java.util.Map;
 import java.util.function.Consumer;
 
 /**
@@ -32,7 +29,7 @@ public class MessageConsumerConfig {
 //    }
 
     @Bean
-    public Consumer<Map<String, Object>> errorLogConsumer(){
+    public Consumer<String> errorLogConsumer(){
 //    public Consumer<ErrorLogMessage> errorLogConsumer(){
         log.warn("<<<in...ㅅㄷㄴㅅ");
         return message->{
@@ -40,13 +37,13 @@ public class MessageConsumerConfig {
 //            String errorMessage = message.getErrorMessage();
 //            long timestamp = message.getTimestamp();
 //            log.warn("<<<incoming<<:{}/{}/{}",errorType,errorMessage,timestamp);
-              log.info ("incoling is <<<:{}",(String) message.get("key"));
+              log.info ("incoming is <<<:{}",message);
         };
     }
 
-    public Consumer<ConfigUpdateMessage> configConsumer(){
-        return message->{
-            log.info("Set this config :{}",message.getConfigKey());
-        };
-    }
+//    public Consumer<ConfigUpdateMessage> configConsumer(){
+//        return message->{
+//            log.info("Set this config :{}",message.getConfigKey());
+//        };
+//    }
 }

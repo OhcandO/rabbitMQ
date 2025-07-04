@@ -6,10 +6,11 @@ spring:
 #      function:
 #        bindings:
 #          errorLogConsumer-in-0: errorLogConsumer
+
       bindings:
         # === PRODUCER 바인딩 설정 ===
         errorLogProducer-out-0: # producer_1: 공통 error 로그를 수집하는 큐로 메시지 전달 (direct exchange)
-          destination: error.logging.exchange         # 업계 표준: error 로그용 exchange
+          destination: error.logging.exchange
 
         errorLogConsumer-in-0:
           destination: error.logging.exchange
@@ -34,7 +35,7 @@ spring:
           errorLogProducer-out-0:
             producer:
               bindingRoutingKey: error.log
-              exchange-type: direct
+#              exchange-type: direct
 
 #          commandProducer-out-0:
 #            producer:
