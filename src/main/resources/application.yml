@@ -5,4 +5,4 @@ spring:
   application:
     name: rabbitMQ
   config:
-    import: optional:classpath:application-stream_service.yml
+    import: optional:classpath:application-stream_service_direct.yml

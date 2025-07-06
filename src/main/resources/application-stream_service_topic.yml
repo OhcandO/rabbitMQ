@@ -12,21 +12,19 @@ spring:
           group: errorLogGroup
           content-type: application/json
 
-      rabbit:
-        bindings:
-          # === PRODUCER 별 RabbitMQ 세부 설정 ===
-          errorLogProducer-out-0:
-            producer:
+#      rabbit:
+#        bindings:
+#          errorLogProducer-out-0:
+#            producer:
 #              routing-key: error.log
-              routing-key-expression: '''error.log'''
-#              bindingRoutingKey: error.log
-              exchange-type: direct
+#              routing-key-expression: '''error.log'''
+#              exchange-type: direct
 
           # === CONSUMER 별 RabbitMQ 세부 설정 ===
-          errorLogConsumer-in-0:
-            consumer:
-              binding-routing-key: error.log
-              exchange-type: direct
+#          errorLogConsumer-in-0:
+#            consumer:
+#              binding-routing-key: error.log
+#              exchange-type: direct
     function:
       definition: errorLogConsumer
   rabbitmq:
