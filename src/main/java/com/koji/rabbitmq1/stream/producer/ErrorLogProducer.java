@@ -1,6 +1,5 @@
-package com.koji.rabbitmq1.message.producer;
+package com.koji.rabbitmq1.stream.producer;
 
-import com.koji.rabbitmq1.vo.ErrorLogMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.stream.function.StreamBridge;

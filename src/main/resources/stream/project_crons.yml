@@ -1,0 +1,30 @@
+batch:
+  iot:
+    merge-smallflow:
+      note: (유솔)소규모유량계 데이터 수집
+      destination: batch.iot.connect
+      bindingKey: batch.iot.connect.smallFlow
+      cron: 0 0 * * * ? #매 시간
+      interval: 20 #분 전
+    merge-usage:
+      note: (유솔)스마트미터 수용가 및 사용량 수집
+      destination: batch.iot.connect
+      bindingKey: batch.iot.connect.usage
+      cron: 0 0 4 * * ? # 매일
+    merge-leakage:
+      note: 누수센서 데이터 수집 (유솔, 위플랫)
+      destination: batch.iot.connect
+      bindingKey: batch.iot.connect.leakage
+      cron: 0 0 1 * * 1 # 월요일 새벽 1시
+  rev:
+    merge-waternet-tag-info:
+      note: (워터넷) 태그 정보 수집
+      destination: batch.rev.connect
+      bindingKey: batch.rev.connect.tagInfo
+      cron: 0 10 * * * ?
+    merge-waternet-tag-collect:
+      note: (워터넷) 태그 이력 수집
+      destination: batch.rev.connect
+      bindingKey: batch.rev.connect.tagCollect
+      cron: 0 * * * * ?
+      interval: 5

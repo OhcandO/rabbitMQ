@@ -5,4 +5,6 @@ spring:
   application:
     name: rabbitMQ
   config:
-    import: optional:classpath:application-stream_service_direct.yml
+    import:
+      - optional:classpath:stream/application-stream.yml
+      - optional:classpath:stream/project_crons.yml

@@ -1,6 +1,5 @@
-package com.koji.rabbitmq1.message.consumer;
+package com.koji.rabbitmq1.stream.consumer;
 
-import com.koji.rabbitmq1.vo.ConfigUpdateMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;

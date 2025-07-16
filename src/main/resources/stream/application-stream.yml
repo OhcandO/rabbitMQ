@@ -1,0 +1,20 @@
+spring:
+  config:
+    import: optional:classpath:stream/application-stream_common.yml
+
+  cloud:
+    function:
+      definition: collectMessage
+    stream:
+      bindings:
+        collectMessage-in-0:
+          destination: message.collect
+        #===IOT 서비스의 연계수집===
+        initBatchIOT:
+          destination: ${batch.iot.merge-smallflow.destination}
+      rabbit:
+        bindings:
+          initBatchIOT:
+            producer:
+              exchange-type: direct
+              routing-key-expression: "headers['routingKey']"

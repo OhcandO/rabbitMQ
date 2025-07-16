@@ -1,6 +1,6 @@
 package com.koji.rabbitmq1.config;
 
-import com.koji.rabbitmq1.message.producer.ErrorLogProducer;
+import com.koji.rabbitmq1.stream.producer.ErrorLogProducer;
 import com.koji.rabbitmq1.vo.ErrorLogMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

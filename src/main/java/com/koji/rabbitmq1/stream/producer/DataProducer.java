@@ -1,4 +1,4 @@
-package com.koji.rabbitmq1.message.producer;
+package com.koji.rabbitmq1.stream.producer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

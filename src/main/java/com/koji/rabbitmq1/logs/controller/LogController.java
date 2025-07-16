@@ -1,6 +1,6 @@
-package com.koji.rabbitmq1.controller;
+package com.koji.rabbitmq1.logs.controller;
 
-import com.koji.rabbitmq1.message.producer.DataProducer;
+import com.koji.rabbitmq1.stream.producer.DataProducer;
 import com.koji.rabbitmq1.vo.MyData;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
