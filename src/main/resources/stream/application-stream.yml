@@ -1,20 +1,25 @@
 spring:
   config:
-    import: optional:classpath:stream/application-stream_common.yml
-
+    import:
+      - optional:classpath:stream/application-stream_common.yml
+      - optional:classpath:stream/project_crons.yml
+      - optional:classpath:stream/bulk-data-transfer.yml
   cloud:
     function:
       definition: collectMessage
     stream:
       bindings:
+        # === Batch 작업수행하는
         collectMessage-in-0:
           destination: message.collect
-        #===IOT 서비스의 연계수집===
-        initBatchIOT:
-          destination: ${batch.iot.merge-smallflow.destination}
+          consumer:
+            batch-mode: true
       rabbit:
         bindings:
-          initBatchIOT:
-            producer:
+          collectMessage-in-0:
+            consumer:
               exchange-type: direct
-              routing-key-expression: "headers['routingKey']"
+              binding-routing-key: message.collect
+              enable-batching: true
+              batch-size: 50
+              receive-timeout: 5000

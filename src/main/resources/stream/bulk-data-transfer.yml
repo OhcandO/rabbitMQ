@@ -1,0 +1,13 @@
+bulk:
+  tag-info:
+    destination: data.rev.collect
+    bindingKey: data.rev.collect.taginfo
+    note: REV 로 태그정보 보내 rev.tm_wm_tag 테이블 갱신
+    batchSize: 100
+    bufferSize: 500
+  tag-collect:
+    destination: data.rev.collect
+    bindingKey: data.rev.collect.tagcollect
+    note: REV 로 순시태그이력 보내 rev.th_wm_tag_colct 테이블 갱신
+    batchSize: 250
+    bufferSize: 5000

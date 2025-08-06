@@ -1,14 +1,16 @@
 spring:
-  rabbitmq:
-    host: localhost
-    port: 5672
-    username: guest
-    password: guest
   cloud:
     stream:
+      # === 기본 로그 수집 목적지 ==
+      defaultCollectionDestination: message.collect
       default:
         content-type: application/json
-#      rabbit:
-#        default:
-#          producer:
-#            exchangeType: direct
+      rabbit:
+        default:
+          producer:
+            exchangeType: direct
+            routing-key-expression: "headers['routingKey']"
+          consumer:
+            exchange-type: direct
+            durable-subscription: false
+            exchange-auto-delete: true

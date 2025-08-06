@@ -1,4 +1,4 @@
-package com.koji.rabbitmq1.vo;
+package com.koji.rabbitmq1.stream.vo;
 
 import lombok.Data;
 
@@ -27,5 +27,5 @@ public class CommonMessageVO {
     /** 메시지 목적 */
     String note;
     /** 메시지 상태     */
-    int currentState;
+    String currentState;
 }
